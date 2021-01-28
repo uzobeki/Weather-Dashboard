@@ -1,0 +1,19 @@
+.navbar-brand {
+    align-items: center;
+    font-size: 50px;
+}
+
+.search-title {
+    font-size: 25px;
+}
+
+.grey-bg {
+    background-color: rgb(243, 243, 243);
+    background-size: 50%;
+}
+
+main {
+    position: absolute;
+    left:35%;
+    top: 15%;
+}

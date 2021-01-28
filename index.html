@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Weather Dashboard</a>
+        </div>
+    </nav>
+    <br>
+    <aside class="container ">
+        <div class="row">
+            <div class="col-lg-3 grey-bg">
+                <p class="search-title">Search for a city:</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control search" placeholder="Atlanta, GA, Houston, TX..."
+                        aria-describedby="inputGroup-sizing-default">
+                    <button type="button" class="btn btn-primary searchBtn">Search</button>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <main class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                    </div>
+                </div>
+                <br>
+                <h4>5-Day Forecast:</h4>
+            </div>
+        </div>
+    </main>
+
+    <!-- <script src="./assets/js/script.js" type="text/javascript"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script>
+
+        $("button").on("click", function (e) {
+            e.preventDefault();
+
+            var city = $(".search").val();
+            console.log(city);
+
+            var queryUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=2d325a02be6346b80e081d792e1e2cb4"
+
+            $.ajax({
+                url: queryUrl,
+                method: "GET"
+            }).then(function(result){
+                console.log(result);
+                // City Name and Date
+                var cityName = $("<h3>").text(result.city.name);
+                $(".card-body").append(cityName);
+
+                // Icon
+                var weatherIcon = $("<img>");
+                var iconCode = result.list[0].weather[0].icon;
+                var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png"
+                console.log(iconUrl);
+                weatherIcon.attr("src",iconUrl);
+                $(".card-body").append(weatherIcon);
+
+                // Text
+                
+            })
+
+        }) 
+    </script>
+</body>
+
+</html>
