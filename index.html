@@ -18,46 +18,54 @@
         </div>
     </nav>
     <br>
-    <!-- <aside class="container ">
-    </aside> -->
+
     <main class="container">
         <div class="row">
             <!-- Search Bar -->
             <div class="col-lg-3 float-start grey-bg">
                 <p class="search-title">Search for a city:</p>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control search" placeholder="Atlanta, Houston, Vegas..."
-                        aria-describedby="inputGroup-sizing-default">
-                    <button type="button" class="btn btn-primary searchBtn">Search</button>
-                </div>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control search" placeholder="Atlanta, Houston, Vegas..."
+                            aria-describedby="inputGroup-sizing-default">
+                        <button type="button" class="btn btn-primary searchBtn">Search</button>
+                    </form>
+                    <br>
             </div>
-            <!--Weather Display-->
-            <div class="col-lg-8 float-end">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="city-name"> </h3> <img class="wicon">
-                    </div>
-                </div>
-                <br>
-                <h3>5-Day Forecast:</h3>
-                <div class="row" id="forecast">
-
+            <div class="row">
+                <div class="recent-search ">
+    
                 </div>
             </div>
         </div>
-        
+        <!--Weather Display-->
+        <div class="col-lg-8 float-end">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="city-name"> </h3> <img class="wicon">
+                </div>
+            </div>
+            <br>
+            <h3>5-Day Forecast:</h3>
+            <div class="row" id="forecast">
+
+            </div>
+        </div>
+        </div>
+
     </main>
 
-    <!-- <script src="./assets/js/script.js" type="text/javascript"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    <script src="./assets/js/script.js" type="text/javascript"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
     <script>
-
-        $("button").on("click", function (e) {
-            // e.preventDefault();
+        
+        $(".searchBtn").on("click", function (event) {
+            event.preventDefault();
             $(".weather-text").empty();
             $("#forecast").empty();
+            $("#uvBtn").remove()
 
             var city = $(".search").val();
             console.log(city);
@@ -103,8 +111,9 @@
                     url: uvUrl,
                     method: "GET"
                 }).then(function (response) {
-                    var uvIndex = $("<p class='weather-text'>").text("UV Index: " + response.value);
+                    var uvIndex = $("<button class='btn bg-warning weather-text' id='uvBtn'>").text("UV Index: " + response.value);
                     $(".card-body").append(uvIndex);
+
                 });
 
                 // Five-Day Forecast
@@ -112,11 +121,16 @@
                 var list = result.list;
                 console.log(list);
 
-                for (var i = 0; i < list.length; i+=8) {
+                for (var i = 0; i < list.length; i += 8) {
 
 
 
                     var forecast = $("<div class='card bg-primary text-white' style='width: 10rem; margin: 8px'>");
+
+                    var foreDate = $("<p class='card-title'>").text(result.list[i].dt_txt.slice(0, 10));
+                    forecast.append(foreDate);
+
+
 
                     var foreTemp = $("<p class='card-text'>").text("Temperature: " + result.list[i].main.temp + "°F");
                     forecast.append(foreTemp);
@@ -124,18 +138,38 @@
                     var cardIcons = result.list[i].weather[0].icon;
                     var foreIcon = $("<img>");
                     var foreIconUrl = "http://openweathermap.org/img/w/" + cardIcons + ".png";
-                    foreIcon.attr("src",foreIconUrl);
+                    foreIcon.attr("src", foreIconUrl);
                     foreIcon.attr("style", "height: 40px; width: 40px");
                     forecast.append(foreIcon);
 
-                    var foreHumid = $("<p class='card-text' >").text("Humidity: " + result.list[i].main.humidity + "%")
-                    forecast.append(foreHumid);    
-                    
-                    $("#forecast").append(forecast);
-                }
-            })
+                    var foreHumid = $("<p class='card-text'>").text("Humidity: " + result.list[i].main.humidity + "%")
+                    forecast.append(foreHumid);
 
-        }) 
+                    $("#forecast").append(forecast);
+                };
+                // Recent Searches
+                    var cityVal = city.trim();
+                    var searchArr = [];
+                    searchArr.push(cityVal);
+                    console.log(searchArr);
+                    localStorage.setItem('city',JSON.stringify(searchArr));
+
+                    recentSearch();
+            })
+            function recentSearch(){
+                var searchHistory = JSON.parse(localStorage.getItem("city"));
+                var recentBtn = $("<button type='submit' class='btn btn-outline-primary recent-button' style='width: 12rem'>").text(searchHistory);
+                var historyDiv = $("<div>");
+                historyDiv.append(recentBtn);
+                $(".recent-search").prepend(recentBtn);
+            }
+            $(".recent-button").on('click',function(e) {
+                e.preventDefault();
+                console.log($(this).text());
+                city = $(this).text();
+                console.log(city);
+            })
+        })  
     </script>
 </body>
 
