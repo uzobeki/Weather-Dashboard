@@ -70,7 +70,7 @@
             var city = $(".search").val();
             console.log(city);
 
-            var queryUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=2d325a02be6346b80e081d792e1e2cb4"
+            var queryUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=2d325a02be6346b80e081d792e1e2cb4"
 
             $.ajax({
                 url: queryUrl,
@@ -84,7 +84,7 @@
                 // Icon
                 var weatherIcon = $(".wicon");
                 var iconCode = result.list[0].weather[0].icon;
-                var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png"
+                var iconUrl = "https://openweathermap.org/img/w/" + iconCode + ".png"
                 console.log(iconUrl);
                 weatherIcon.attr("src", iconUrl);
                 $(".card-body").append(weatherIcon);
@@ -104,7 +104,7 @@
                 // UV Index
                 var lat = result.city.coord.lat;
                 var lon = result.city.coord.lon;
-                var uvUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=2d325a02be6346b80e081d792e1e2cb4";
+                var uvUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=2d325a02be6346b80e081d792e1e2cb4";
                 console.log(uvUrl);
 
                 $.ajax({
@@ -137,7 +137,7 @@
 
                     var cardIcons = result.list[i].weather[0].icon;
                     var foreIcon = $("<img>");
-                    var foreIconUrl = "http://openweathermap.org/img/w/" + cardIcons + ".png";
+                    var foreIconUrl = "https://openweathermap.org/img/w/" + cardIcons + ".png";
                     foreIcon.attr("src", foreIconUrl);
                     foreIcon.attr("style", "height: 40px; width: 40px");
                     forecast.append(foreIcon);
